@@ -7,35 +7,45 @@
 
 import UIKit
 
-
-
 class ViewController: UIViewController {
     
     private let apiClient = APIClient()
     private let activityIndicator = UIActivityIndicatorView(style: .large)
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
+       
         setupActivityIndicator()
 
     }
     
-    //Mark:
+    // MARK: - Private Functions
     private func setupActivityIndicator() {
            activityIndicator.center = view.center
            activityIndicator.hidesWhenStopped = true
            view.addSubview(activityIndicator)
        }
+    
+    func showAlert(title: String, message: String ,status: Bool) {
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            let retryAction = UIAlertAction(title: "RETRY", style: .default, handler: nil)
+            
+        if (status == true) {
+            alertController.addAction(okAction)
+        }
+        else{
+            alertController.addAction(okAction)
+            alertController.addAction(retryAction)
 
-    //Mark:Button Action
+        }
+
+            present(alertController, animated: true, completion: nil)
+        }
+
+    // MARK: - Button Action
     @IBAction func fetch(_ sender: Any) {
-        
-        
         activityIndicator.startAnimating()
-        
         apiClient.fetchData { [weak self] result in
             guard let self = self else { return }
             
@@ -57,22 +67,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func showAlert(title: String, message: String ,status: Bool) {
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            let retryAction = UIAlertAction(title: "RETRY", style: .default, handler: nil)
-            
-        if (status == true) {
-            alertController.addAction(okAction)
-        }
-        else{
-            alertController.addAction(okAction)
-            alertController.addAction(retryAction)
-
-        }
-
-            present(alertController, animated: true, completion: nil)
-        }
+    
     
 }
 
